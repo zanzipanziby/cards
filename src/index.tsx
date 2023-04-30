@@ -7,6 +7,7 @@ import reportWebVitals from "./reportWebVitals";
 import "./index.css";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import { Register } from "features/auth/components/Register/Register";
+import { Login } from "features/auth/components/Login/Login";
 
 const container = document.getElementById("root")!;
 const root = createRoot(container);
@@ -18,6 +19,10 @@ const router = createBrowserRouter([
   {
     path: "/register",
     element: <Register />,
+  },
+  {
+    path: "/login",
+    element: <Login />,
   },
 ]);
 root.render(
