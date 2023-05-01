@@ -1,13 +1,10 @@
-import { createAsyncThunk, createSlice, PayloadAction } from "@reduxjs/toolkit";
+import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import {
   LoginRequestType,
   RegisterRequestType,
 } from "features/auth/types/auth.request.types";
 import { authApi } from "features/auth/api/auth.api";
-import {
-  ProfileType,
-  RegisterResponseType,
-} from "features/auth/types/auth.response.types";
+import { ProfileType } from "features/auth/types/auth.response.types";
 import { createAppAsyncThunk } from "common/utils/create-app-async-thunk";
 
 const slice = createSlice({
