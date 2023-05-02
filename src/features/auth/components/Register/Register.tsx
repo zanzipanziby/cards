@@ -2,6 +2,7 @@ import React from "react";
 import { RegisterRequestType } from "features/auth/types/auth.request.types";
 import { useAppDispatch } from "app/hooks";
 import { authThunk } from "features/auth/auth.slice";
+import { AuthLayout } from "features/auth/components/AuthLayout/AuthLayout";
 
 export const Register = () => {
   const dispatch = useAppDispatch();
@@ -14,8 +15,8 @@ export const Register = () => {
     dispatch(authThunk.register(registerData));
   };
   return (
-    <div>
+    <AuthLayout title={"Sign Up"}>
       <button onClick={onClickHandler}>register</button>
-    </div>
+    </AuthLayout>
   );
 };

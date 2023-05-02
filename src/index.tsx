@@ -6,29 +6,20 @@ import App from "app/component/App/App";
 import reportWebVitals from "./reportWebVitals";
 import "./index.css";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
-import { Register } from "features/auth/components/Register/Register";
 import { Login } from "features/auth/components/Login/Login";
+import { ThemeProvider } from "@mui/material";
+import { theme } from "common/color-theme/color-theme";
+import { router } from "common/router/router";
 
 const container = document.getElementById("root")!;
 const root = createRoot(container);
-const router = createBrowserRouter([
-  {
-    path: "/",
-    element: <App />,
-  },
-  {
-    path: "/register",
-    element: <Register />,
-  },
-  {
-    path: "/login",
-    element: <Login />,
-  },
-]);
+
 root.render(
   <React.StrictMode>
     <Provider store={store}>
-      <RouterProvider router={router} />
+      <ThemeProvider theme={theme}>
+        <RouterProvider router={router} />
+      </ThemeProvider>
     </Provider>
   </React.StrictMode>
 );

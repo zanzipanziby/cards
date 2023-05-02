@@ -4,6 +4,8 @@ import { useEffect } from "react";
 import { appActions } from "app/app.slice";
 import style from "./App.module.css";
 import { Appbar } from "app/component/App/Toolbar/Appbar";
+import { Outlet, Route, Routes } from "react-router-dom";
+import { ContentContainer } from "app/component/App/ContentContainer/ContentContainer";
 
 function App() {
   const isLoading = useAppSelector((state) => state.app.isLoading);
@@ -21,6 +23,11 @@ function App() {
     <div className={style.App}>
       {/*{isLoading && <h1>Loader...</h1>}*/}
       <Appbar />
+      <ContentContainer>
+        <div className={style.align}>
+          <Outlet />
+        </div>
+      </ContentContainer>
     </div>
   );
 }
