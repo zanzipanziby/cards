@@ -4,7 +4,7 @@ import { useEffect } from "react";
 import { appActions } from "app/app.slice";
 import style from "./App.module.css";
 import { Appbar } from "app/component/App/Toolbar/Appbar";
-import { Outlet, Route, Routes } from "react-router-dom";
+import { Outlet } from "react-router-dom";
 import { ContentContainer } from "app/component/App/ContentContainer/ContentContainer";
 
 function App() {

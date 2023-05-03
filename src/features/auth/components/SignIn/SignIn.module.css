@@ -1,0 +1,12 @@
+.forgotPassword{
+    text-align: right;
+    color: inherit;
+
+}
+.forgotPassword span:hover {
+    color: #366EFF;
+    border-bottom: 1px solid #366EFF;
+}
+.checkboxLabel{
+    margin-top: 30px;
+}

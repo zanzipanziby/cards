@@ -2,11 +2,10 @@ import React from "react";
 import { createRoot } from "react-dom/client";
 import { Provider } from "react-redux";
 import { store } from "app/store";
-import App from "app/component/App/App";
 import reportWebVitals from "./reportWebVitals";
 import "./index.css";
-import { createBrowserRouter, RouterProvider } from "react-router-dom";
-import { Login } from "features/auth/components/Login/Login";
+import { RouterProvider } from "react-router-dom";
+
 import { ThemeProvider } from "@mui/material";
 import { theme } from "common/color-theme/color-theme";
 import { router } from "common/router/router";

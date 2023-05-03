@@ -1,8 +1,9 @@
 import { createBrowserRouter } from "react-router-dom";
 import App from "app/component/App/App";
-import { Login } from "features/auth/components/Login/Login";
 import React from "react";
-import { Register } from "features/auth/components/Register/Register";
+import { SignIn } from "features/auth/components/SignIn/SignIn";
+import { SignUp } from "features/auth/components/SignUp/SignUp";
+import { NewPassword } from "features/auth/components/NewPassword/NewPassword";
 
 export const router = createBrowserRouter([
   {
@@ -11,11 +12,15 @@ export const router = createBrowserRouter([
     children: [
       {
         path: "/login",
-        element: <Login />,
+        element: <SignIn />,
       },
       {
         path: "/register",
-        element: <Register />,
+        element: <SignUp />,
+      },
+      {
+        path: "/forgot-password",
+        element: <NewPassword />,
       },
     ],
   },
