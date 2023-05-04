@@ -11,6 +11,7 @@ const slice = createSlice({
   name: "auth",
   initialState: {
     profile: null as ProfileType | null,
+    isLoggedIn: false,
   },
   reducers: {},
   extraReducers: (builder) => {
@@ -18,6 +19,7 @@ const slice = createSlice({
       login.fulfilled,
       (state, action: PayloadAction<{ profile: ProfileType }>) => {
         state.profile = action.payload.profile;
+        state.isLoggedIn = true;
       }
     );
   },

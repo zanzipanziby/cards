@@ -1,6 +1,6 @@
 import React from "react";
-import Checkbox from "@mui/material/Checkbox/Checkbox";
+import Checkbox, { CheckboxProps } from "@mui/material/Checkbox/Checkbox";
 
-export const SuperCheckbox = () => {
-  return <Checkbox />;
+export const SuperCheckbox = (props: CheckboxProps) => {
+  return <Checkbox {...props} />;
 };

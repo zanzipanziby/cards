@@ -9,9 +9,8 @@ export const SuperInput = (props: InputPropsType) => {
 
   return (
     <TextField
-      {...props}
-      type={inputType}
       variant={!props.variant ? "standard" : props.variant}
+      {...props}
     />
   );
 };
