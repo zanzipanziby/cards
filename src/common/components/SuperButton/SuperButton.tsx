@@ -1,14 +1,8 @@
 import React from "react";
-import Button from "@mui/material/Button";
+import Button, { ButtonProps } from "@mui/material/Button";
 import style from "./SuperButton.module.css";
 
-type SuperButtonPropsType = {
-  title: string;
-  onClick?: () => void;
-  variant?: "contained" | "text" | "outlined";
-  onSubmit?: () => void;
-  style?: React.CSSProperties;
-};
+type SuperButtonPropsType = ButtonProps;
 
 export const SuperButton = (props: SuperButtonPropsType) => {
   return (
@@ -16,6 +10,7 @@ export const SuperButton = (props: SuperButtonPropsType) => {
       {...props}
       variant={!props.variant ? "contained" : props.variant}
       className={style.button}
+      color={props.color}
     >
       {props.title}
     </Button>

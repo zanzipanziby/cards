@@ -5,12 +5,16 @@ import { FormGroupComponent } from "features/auth/components/WrapperComponent/Fo
 import { SuperInput } from "common/components/SuperInput/SuperInput";
 import { DescriptionComponent } from "common/components/DescriptionComponent/DescriptionComponent";
 import { SuperButton } from "common/components/SuperButton/SuperButton";
+import SuperTitle from "common/components/SuperTitle/SuperTitle";
 
 export const NewPassword = () => {
   return (
     <AuthLayout>
       <FormLabelComponent>
-        <h2 style={{ marginBottom: "50px" }}>Create new password</h2>
+        <SuperTitle
+          style={{ marginBottom: "50px" }}
+          title={"Create new password"}
+        />
       </FormLabelComponent>
       <FormGroupComponent>
         <SuperInput type={"password"} />

@@ -3,18 +3,16 @@ import { AuthLayout } from "features/auth/components/WrapperComponent/AuthLayout
 import { FormLabelComponent } from "features/auth/components/WrapperComponent/FormLabelComponent/FormLabelComponent";
 import { FormGroupComponent } from "features/auth/components/WrapperComponent/FormGroupComponent/FormGroupComponent";
 import { SuperInput } from "common/components/SuperInput/SuperInput";
-import FormControlLabel from "@mui/material/FormControlLabel";
-import style from "features/auth/components/SignIn/SignIn.module.css";
-import { SuperCheckbox } from "common/components/SuperCheckbox/SuperCheckbox";
 import { NavLink } from "react-router-dom";
 import { SuperButton } from "common/components/SuperButton/SuperButton";
 import { DescriptionComponent } from "common/components/DescriptionComponent/DescriptionComponent";
+import SuperTitle from "common/components/SuperTitle/SuperTitle";
 
 export const SignUp = () => {
   return (
     <AuthLayout>
       <FormLabelComponent>
-        <h2>Sign Up</h2>
+        <SuperTitle title={"Sign Up"} />
       </FormLabelComponent>
       <FormGroupComponent>
         <SuperInput

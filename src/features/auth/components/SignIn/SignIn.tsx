@@ -9,12 +9,13 @@ import FormControlLabel from "@mui/material/FormControlLabel";
 import { SuperCheckbox } from "common/components/SuperCheckbox/SuperCheckbox";
 import { NavLink } from "react-router-dom";
 import { DescriptionComponent } from "common/components/DescriptionComponent/DescriptionComponent";
+import SuperTitle from "common/components/SuperTitle/SuperTitle";
 
 export const SignIn = () => {
   return (
     <AuthLayout>
       <FormLabelComponent>
-        <h2>Sign In</h2>
+        <SuperTitle title={"Sign In"} />
       </FormLabelComponent>
       <FormGroupComponent>
         <SuperInput margin={"normal"} label={"Email"} type={"email"} />

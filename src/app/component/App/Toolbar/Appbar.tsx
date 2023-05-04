@@ -6,6 +6,8 @@ import Button from "@mui/material/Button";
 import mainLogo from "../../../assets/image/mainLogo.png";
 import style from "app/component/App/Toolbar/Appbar.module.css";
 import { ContentContainer } from "app/component/App/ContentContainer/ContentContainer";
+import { SuperButton } from "common/components/SuperButton/SuperButton";
+import { NavLink } from "react-router-dom";
 
 export const Appbar = () => {
   return (
@@ -16,7 +18,9 @@ export const Appbar = () => {
             <div>
               <img className={style.logo} src={mainLogo} alt="logo" />
             </div>
-            <Button color="inherit">Login</Button>
+            <NavLink to={"/login"} style={{ display: "block" }}>
+              <SuperButton title={"Sign in"} />
+            </NavLink>
           </Toolbar>
         </ContentContainer>
       </AppBar>
