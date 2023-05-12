@@ -12,6 +12,7 @@ const slice = createSlice({
   initialState: {
     profile: null as ProfileType | null,
     isLoggedIn: false,
+    isRegistered: false,
   },
   reducers: {},
   extraReducers: (builder) => {
@@ -20,15 +21,24 @@ const slice = createSlice({
       (state, action: PayloadAction<{ profile: ProfileType }>) => {
         state.profile = action.payload.profile;
         state.isLoggedIn = true;
+        state.isRegistered = true;
       }
     );
+    builder.addCase(register.fulfilled, (state) => {
+      state.isRegistered = true;
+    });
+    builder.addCase(authorization.fulfilled, (state, action) => {
+      state.profile = action.payload.profile;
+      state.isLoggedIn = true;
+      state.isRegistered = true;
+    });
   },
 });
 
 const register = createAppAsyncThunk<void, RegisterRequestType>(
   "auth/register",
-  (arg: RegisterRequestType) => {
-    authApi.register(arg).then();
+  async (arg: RegisterRequestType) => {
+    await authApi.register(arg);
   }
 );
 
@@ -40,5 +50,13 @@ const login = createAppAsyncThunk<{ profile: ProfileType }, LoginRequestType>(
   }
 );
 
+const authorization = createAppAsyncThunk<{ profile: ProfileType }, {}>(
+  "auth/authorization",
+  async (arg: {}) => {
+    const res = await authApi.authorization(arg);
+    return { profile: res.data };
+  }
+);
+
 export const authReducer = slice.reducer;
-export const authThunk = { register, login };
+export const authThunk = { register, login, authorization };
