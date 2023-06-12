@@ -13,7 +13,7 @@ import SuperTitle from "common/components/SuperTitle/SuperTitle";
 import { Controller, SubmitHandler, useForm } from "react-hook-form";
 import { authThunk } from "features/auth/auth.slice";
 import { LoginRequestType } from "features/auth/types/auth.request.types";
-import { useAppDispatch, useAppSelector } from "app/hooks";
+import { useAppDispatch, useAppSelector } from "common/hooks";
 
 export const SignIn = () => {
   const dispatch = useAppDispatch();

@@ -6,39 +6,41 @@ import {
 import { authApi } from "features/auth/api/auth.api";
 import { ProfileType } from "features/auth/types/auth.response.types";
 import { createAppAsyncThunk } from "common/utils/create-app-async-thunk";
+import { AxiosError } from "axios";
+import { redirect } from "react-router-dom";
 
 const slice = createSlice({
   name: "auth",
   initialState: {
     profile: null as ProfileType | null,
     isLoggedIn: false,
-    isRegistered: false,
   },
   reducers: {},
   extraReducers: (builder) => {
-    builder.addCase(
-      login.fulfilled,
-      (state, action: PayloadAction<{ profile: ProfileType }>) => {
+    builder
+      .addCase(
+        login.fulfilled,
+        (state, action: PayloadAction<{ profile: ProfileType }>) => {
+          state.profile = action.payload.profile;
+          state.isLoggedIn = true;
+        }
+      )
+      .addCase(authorization.fulfilled, (state, action) => {
         state.profile = action.payload.profile;
         state.isLoggedIn = true;
-        state.isRegistered = true;
-      }
-    );
-    builder.addCase(register.fulfilled, (state) => {
-      state.isRegistered = true;
-    });
-    builder.addCase(authorization.fulfilled, (state, action) => {
-      state.profile = action.payload.profile;
-      state.isLoggedIn = true;
-      state.isRegistered = true;
-    });
+      });
   },
 });
 
 const register = createAppAsyncThunk<void, RegisterRequestType>(
   "auth/register",
-  async (arg: RegisterRequestType) => {
-    await authApi.register(arg);
+  async (arg: RegisterRequestType, thunkAPI) => {
+    try {
+      await authApi.register(arg);
+      //todo организовать редирект
+    } catch (e) {
+      thunkAPI.rejectWithValue(e);
+    }
   }
 );
 
@@ -52,11 +54,18 @@ const login = createAppAsyncThunk<{ profile: ProfileType }, LoginRequestType>(
 
 const authorization = createAppAsyncThunk<{ profile: ProfileType }, {}>(
   "auth/authorization",
-  async (arg: {}) => {
-    const res = await authApi.authorization(arg);
-    return { profile: res.data };
+  async (arg, thunkAPI) => {
+    const { dispatch, rejectWithValue } = thunkAPI;
+    try {
+      const res = await authApi.authorization(arg);
+      return { profile: res.data };
+    } catch (e) {
+      const error = e as AxiosError;
+      return rejectWithValue(error.response?.data);
+    }
   }
 );
 
 export const authReducer = slice.reducer;
 export const authThunk = { register, login, authorization };
+export const authActions = { ...authThunk, ...slice.actions };

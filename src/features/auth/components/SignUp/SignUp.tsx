@@ -3,36 +3,35 @@ import { AuthLayout } from "features/auth/components/WrapperComponent/AuthLayout
 import { FormLabelComponent } from "features/auth/components/WrapperComponent/FormLabelComponent/FormLabelComponent";
 import { FormGroupComponent } from "features/auth/components/WrapperComponent/FormGroupComponent/FormGroupComponent";
 import { SuperInput } from "common/components/SuperInput/SuperInput";
-import { Navigate, NavLink } from "react-router-dom";
+import { NavLink, redirect } from "react-router-dom";
 import { SuperButton } from "common/components/SuperButton/SuperButton";
 import { DescriptionComponent } from "common/components/DescriptionComponent/DescriptionComponent";
 import SuperTitle from "common/components/SuperTitle/SuperTitle";
-import { useAppDispatch, useAppSelector } from "app/hooks";
+import { useAppDispatch } from "common/hooks";
 import { Controller, SubmitHandler, useForm } from "react-hook-form";
 import { RegisterRequestType } from "features/auth/types/auth.request.types";
+import { yupResolver } from "@hookform/resolvers/yup";
+import { registrationValidationSchema } from "../../../../common/yap.validation";
+import { authActions } from "../../auth.slice";
 
 type RegisterFormData = RegisterRequestType & { confirmPassword: string };
 
 export const SignUp = () => {
   const dispatch = useAppDispatch();
-  const isRegistered = useAppSelector((state) => state.auth.isRegistered);
 
-  const { control, handleSubmit } = useForm({
-    defaultValues: {
-      email: "",
-      password: "",
-      confirmPassword: "",
-    },
+  const {
+    control,
+    handleSubmit,
+    formState: { errors },
+  } = useForm({
+    resolver: yupResolver(registrationValidationSchema),
   });
   const onSubmit: SubmitHandler<RegisterFormData> = (data) => {
     const { email, password } = data;
-    const registerRequestData = { email, password };
-    alert(JSON.stringify(registerRequestData));
+    dispatch(authActions.register({ email, password }));
+    //todo не работает редирект
+    return redirect("/login");
   };
-
-  if (isRegistered) {
-    return <Navigate to={"/login"} />;
-  }
   return (
     <AuthLayout>
       <FormLabelComponent>
@@ -55,6 +54,7 @@ export const SignUp = () => {
             name={"email"}
             control={control}
           />
+          {errors.email && <div>{errors.email.message}</div>}
           <Controller
             render={({ field }) => {
               return (
@@ -70,6 +70,7 @@ export const SignUp = () => {
             name={"password"}
             control={control}
           />
+          {errors.password && <div>{errors.password.message}</div>}
           <Controller
             render={({ field }) => {
               return (
@@ -85,7 +86,9 @@ export const SignUp = () => {
             name={"confirmPassword"}
             control={control}
           />
-
+          {errors.confirmPassword && (
+            <div>{errors.confirmPassword.message}</div>
+          )}
           <SuperButton
             title={"Sign Up"}
             style={{ margin: "50px 0 20px 0" }}
