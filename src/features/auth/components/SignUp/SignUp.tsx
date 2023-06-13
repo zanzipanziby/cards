@@ -3,7 +3,7 @@ import { AuthLayout } from "features/auth/components/WrapperComponent/AuthLayout
 import { FormLabelComponent } from "features/auth/components/WrapperComponent/FormLabelComponent/FormLabelComponent";
 import { FormGroupComponent } from "features/auth/components/WrapperComponent/FormGroupComponent/FormGroupComponent";
 import { SuperInput } from "common/components/SuperInput/SuperInput";
-import { NavLink, redirect } from "react-router-dom";
+import { NavLink, useNavigate } from "react-router-dom";
 import { SuperButton } from "common/components/SuperButton/SuperButton";
 import { DescriptionComponent } from "common/components/DescriptionComponent/DescriptionComponent";
 import SuperTitle from "common/components/SuperTitle/SuperTitle";
@@ -12,12 +12,15 @@ import { Controller, SubmitHandler, useForm } from "react-hook-form";
 import { RegisterRequestType } from "features/auth/types/auth.request.types";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { registrationValidationSchema } from "../../../../common/yap.validation";
+import s from "./SignUp.module.css";
 import { authActions } from "../../auth.slice";
+import { toast } from "react-toastify";
 
 type RegisterFormData = RegisterRequestType & { confirmPassword: string };
 
 export const SignUp = () => {
   const dispatch = useAppDispatch();
+  const navigate = useNavigate();
 
   const {
     control,
@@ -26,12 +29,11 @@ export const SignUp = () => {
   } = useForm({
     resolver: yupResolver(registrationValidationSchema),
   });
-  const onSubmit: SubmitHandler<RegisterFormData> = (data) => {
+  const onSubmit: SubmitHandler<RegisterFormData> = async (data) => {
     const { email, password } = data;
-    dispatch(authActions.register({ email, password }));
-    //todo не работает редирект
-    return redirect("/login");
+    await dispatch(authActions.register({ email, password }));
   };
+
   return (
     <AuthLayout>
       <FormLabelComponent>
@@ -54,7 +56,9 @@ export const SignUp = () => {
             name={"email"}
             control={control}
           />
-          {errors.email && <div>{errors.email.message}</div>}
+          {errors.email && (
+            <div className={s.error}>{errors.email.message}</div>
+          )}
           <Controller
             render={({ field }) => {
               return (
@@ -70,7 +74,9 @@ export const SignUp = () => {
             name={"password"}
             control={control}
           />
-          {errors.password && <div>{errors.password.message}</div>}
+          {errors.password && (
+            <div className={s.error}>{errors.password.message}</div>
+          )}
           <Controller
             render={({ field }) => {
               return (
@@ -87,7 +93,7 @@ export const SignUp = () => {
             control={control}
           />
           {errors.confirmPassword && (
-            <div>{errors.confirmPassword.message}</div>
+            <div className={s.error}>{errors.confirmPassword.message}</div>
           )}
           <SuperButton
             title={"Sign Up"}

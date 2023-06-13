@@ -1,4 +1,5 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
+import { responseErrorHandler } from "../common/utils/responseErrorHandler";
 
 const slice = createSlice({
   // name должен быть уникальным
@@ -21,6 +22,12 @@ const slice = createSlice({
   },
   extraReducers: (builder) => {
     // TODO loader поместить сюда
+    builder.addMatcher(
+      (action: PayloadAction) => action.type.endsWith("/rejected"),
+      (state, action) => {
+        state.error = responseErrorHandler(action.payload);
+      }
+    );
   },
 });
 

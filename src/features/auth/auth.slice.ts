@@ -7,7 +7,6 @@ import { authApi } from "features/auth/api/auth.api";
 import { ProfileType } from "features/auth/types/auth.response.types";
 import { createAppAsyncThunk } from "common/utils/create-app-async-thunk";
 import { AxiosError } from "axios";
-import { redirect } from "react-router-dom";
 
 const slice = createSlice({
   name: "auth",
@@ -32,14 +31,14 @@ const slice = createSlice({
   },
 });
 
-const register = createAppAsyncThunk<void, RegisterRequestType>(
+const register = createAppAsyncThunk<any, RegisterRequestType>(
   "auth/register",
   async (arg: RegisterRequestType, thunkAPI) => {
+    const { rejectWithValue } = thunkAPI;
     try {
       await authApi.register(arg);
-      //todo организовать редирект
     } catch (e) {
-      thunkAPI.rejectWithValue(e);
+      return rejectWithValue(e);
     }
   }
 );
@@ -61,7 +60,7 @@ const authorization = createAppAsyncThunk<{ profile: ProfileType }, {}>(
       return { profile: res.data };
     } catch (e) {
       const error = e as AxiosError;
-      return rejectWithValue(error.response?.data);
+      return rejectWithValue(error);
     }
   }
 );
