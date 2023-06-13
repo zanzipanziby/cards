@@ -6,7 +6,11 @@ import { SuperButton } from "common/components/SuperButton/SuperButton";
 import SuperTitle from "common/components/SuperTitle/SuperTitle";
 import { IconButton } from "@mui/material";
 
-export const EditableSpan = () => {
+type EditableSpanPropsType = {
+  title: string;
+};
+
+export const EditableSpan = ({ title }: EditableSpanPropsType) => {
   const [editMode, setEditMode] = useState(false);
 
   if (editMode) {
@@ -28,7 +32,7 @@ export const EditableSpan = () => {
     <Box
       sx={{ display: "flex", justifyContent: "center", alignItems: "center" }}
     >
-      <SuperTitle title={"Some Name"} />
+      <SuperTitle title={title} />
       <IconButton onClick={() => setEditMode(true)}>
         <DriveFileRenameOutlineIcon />
       </IconButton>

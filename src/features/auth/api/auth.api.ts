@@ -16,6 +16,9 @@ export const authApi = {
     return instance.post<ProfileType>("auth/login", data);
   },
   authorization(data: {}) {
-    return instance.post("auth/me", data);
+    return instance.post<ProfileType>("auth/me", data);
+  },
+  logout(data: {}) {
+    return instance.delete<{ info: string; error: string }>("auth/me", data);
   },
 };

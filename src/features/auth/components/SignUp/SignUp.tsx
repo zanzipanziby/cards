@@ -12,7 +12,6 @@ import { Controller, SubmitHandler, useForm } from "react-hook-form";
 import { RegisterRequestType } from "features/auth/types/auth.request.types";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { registrationValidationSchema } from "../../../../common/yap.validation";
-import s from "./SignUp.module.css";
 import { authActions } from "../../auth.slice";
 import { toast } from "react-toastify";
 
@@ -27,11 +26,17 @@ export const SignUp = () => {
     handleSubmit,
     formState: { errors },
   } = useForm({
+    mode: "onBlur",
     resolver: yupResolver(registrationValidationSchema),
   });
-  const onSubmit: SubmitHandler<RegisterFormData> = async (data) => {
+  const onSubmit: SubmitHandler<RegisterFormData> = (data) => {
     const { email, password } = data;
-    await dispatch(authActions.register({ email, password }));
+    dispatch(authActions.register({ email, password }))
+      .unwrap()
+      .then(() => {
+        navigate("/login");
+      })
+      .catch((e) => console.log(e));
   };
 
   return (
@@ -47,8 +52,9 @@ export const SignUp = () => {
                 <SuperInput
                   margin={"normal"}
                   variant={"standard"}
-                  label={"Email"}
+                  label={errors.email ? errors.email.message : "Email"}
                   type={"email"}
+                  error={!!errors.email}
                   {...field}
                 />
               );
@@ -56,17 +62,15 @@ export const SignUp = () => {
             name={"email"}
             control={control}
           />
-          {errors.email && (
-            <div className={s.error}>{errors.email.message}</div>
-          )}
           <Controller
             render={({ field }) => {
               return (
                 <SuperInput
                   margin={"normal"}
                   variant={"standard"}
-                  label={"Password"}
+                  label={errors.password ? errors.password.message : "Password"}
                   type={"password"}
+                  error={!!errors.password}
                   {...field}
                 />
               );
@@ -74,17 +78,20 @@ export const SignUp = () => {
             name={"password"}
             control={control}
           />
-          {errors.password && (
-            <div className={s.error}>{errors.password.message}</div>
-          )}
+
           <Controller
             render={({ field }) => {
               return (
                 <SuperInput
                   margin={"normal"}
                   variant={"standard"}
-                  label={"Confirm password"}
+                  label={
+                    errors.confirmPassword
+                      ? errors.confirmPassword.message
+                      : "Confirm password"
+                  }
                   type={"password"}
+                  error={!!errors.confirmPassword}
                   {...field}
                 />
               );
@@ -92,9 +99,7 @@ export const SignUp = () => {
             name={"confirmPassword"}
             control={control}
           />
-          {errors.confirmPassword && (
-            <div className={s.error}>{errors.confirmPassword.message}</div>
-          )}
+
           <SuperButton
             title={"Sign Up"}
             style={{ margin: "50px 0 20px 0" }}

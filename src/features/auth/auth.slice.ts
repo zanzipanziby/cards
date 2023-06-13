@@ -7,6 +7,8 @@ import { authApi } from "features/auth/api/auth.api";
 import { ProfileType } from "features/auth/types/auth.response.types";
 import { createAppAsyncThunk } from "common/utils/create-app-async-thunk";
 import { AxiosError } from "axios";
+import { toast } from "react-toastify";
+import { responseErrorHandler } from "../../common/utils/responseErrorHandler";
 
 const slice = createSlice({
   name: "auth",
@@ -17,6 +19,9 @@ const slice = createSlice({
   reducers: {},
   extraReducers: (builder) => {
     builder
+      .addCase(register.fulfilled, () => {
+        toast.success("You have successfully registered");
+      })
       .addCase(
         login.fulfilled,
         (state, action: PayloadAction<{ profile: ProfileType }>) => {
@@ -27,6 +32,13 @@ const slice = createSlice({
       .addCase(authorization.fulfilled, (state, action) => {
         state.profile = action.payload.profile;
         state.isLoggedIn = true;
+      })
+      .addCase(authorization.rejected, (state) => {
+        state.isLoggedIn = false;
+      })
+      .addCase(logout.fulfilled, (state) => {
+        state.isLoggedIn = false;
+        state.profile = null;
       });
   },
 });
@@ -53,10 +65,10 @@ const login = createAppAsyncThunk<{ profile: ProfileType }, LoginRequestType>(
 
 const authorization = createAppAsyncThunk<{ profile: ProfileType }, {}>(
   "auth/authorization",
-  async (arg, thunkAPI) => {
-    const { dispatch, rejectWithValue } = thunkAPI;
+  async (_, thunkAPI) => {
+    const { rejectWithValue } = thunkAPI;
     try {
-      const res = await authApi.authorization(arg);
+      const res = await authApi.authorization({});
       return { profile: res.data };
     } catch (e) {
       const error = e as AxiosError;
@@ -65,6 +77,16 @@ const authorization = createAppAsyncThunk<{ profile: ProfileType }, {}>(
   }
 );
 
+const logout = createAppAsyncThunk("auth/logout", async (_, thunkAPI) => {
+  const { rejectWithValue } = thunkAPI;
+  try {
+    const res = await authApi.logout({});
+    toast.success(res.data.info);
+  } catch (e) {
+    rejectWithValue(responseErrorHandler(e as AxiosError | Error));
+  }
+});
+
 export const authReducer = slice.reducer;
-export const authThunk = { register, login, authorization };
+export const authThunk = { register, login, authorization, logout };
 export const authActions = { ...authThunk, ...slice.actions };

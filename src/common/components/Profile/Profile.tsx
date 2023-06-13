@@ -8,8 +8,22 @@ import { EditableSpan } from "common/components/EditableSpan/EditableSpan";
 import { DescriptionComponent } from "common/components/DescriptionComponent/DescriptionComponent";
 import { SuperButton } from "common/components/SuperButton/SuperButton";
 import LogoutIcon from "@mui/icons-material/Logout";
+import { useAppDispatch, useAppSelector } from "../../hooks";
+import { profileSelect } from "../../../features/auth/auth.selectors";
+import { authActions } from "../../../features/auth/auth.slice";
+import { useNavigate } from "react-router-dom";
 
 export const Profile = () => {
+  const profile = useAppSelector(profileSelect);
+  const dispatch = useAppDispatch();
+  const navigate = useNavigate();
+
+  const logoutHandler = () => {
+    dispatch(authActions.logout())
+      .unwrap()
+      .then(() => navigate("/login"));
+  };
+
   return (
     <AuthLayout>
       <FormLabelComponent>
@@ -19,9 +33,9 @@ export const Profile = () => {
         <AvatarComponent
           style={{ margin: "0 auto", width: "100px", height: "100px" }}
         />
-        <EditableSpan />
+        <EditableSpan title={profile?.name ? profile.name : "Some name"} />
         <DescriptionComponent
-          title={"some-email@gmail.com"}
+          title={profile?.email ? profile.email : "some@email.com"}
           textAlign={"center"}
         />
         <div style={{ margin: "0 auto" }}>
@@ -29,6 +43,7 @@ export const Profile = () => {
             title={"Log out"}
             color={"secondary"}
             startIcon={<LogoutIcon />}
+            onClick={logoutHandler}
           />
         </div>
       </FormGroupComponent>

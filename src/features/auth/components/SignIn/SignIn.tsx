@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React from "react";
 import style from "./SignIn.module.css";
 import { AuthLayout } from "features/auth/components/WrapperComponent/AuthLayout/AuthLayout";
 import { FormGroupComponent } from "features/auth/components/WrapperComponent/FormGroupComponent/FormGroupComponent";
@@ -7,25 +7,35 @@ import { SuperInput } from "common/components/SuperInput/SuperInput";
 import { SuperButton } from "common/components/SuperButton/SuperButton";
 import FormControlLabel from "@mui/material/FormControlLabel";
 import { SuperCheckbox } from "common/components/SuperCheckbox/SuperCheckbox";
-import { Navigate, NavLink } from "react-router-dom";
+import { NavLink, useNavigate } from "react-router-dom";
 import { DescriptionComponent } from "common/components/DescriptionComponent/DescriptionComponent";
 import SuperTitle from "common/components/SuperTitle/SuperTitle";
 import { Controller, SubmitHandler, useForm } from "react-hook-form";
 import { authThunk } from "features/auth/auth.slice";
 import { LoginRequestType } from "features/auth/types/auth.request.types";
-import { useAppDispatch, useAppSelector } from "common/hooks";
+import { useAppDispatch } from "common/hooks";
+import { yupResolver } from "@hookform/resolvers/yup";
+import { loginValidationSchema } from "../../../../common/yap.validation";
 
 export const SignIn = () => {
   const dispatch = useAppDispatch();
-  const isLoggedIn = useAppSelector((state) => state.auth.isLoggedIn);
-  const { control, handleSubmit } = useForm<LoginRequestType>();
+  const navigate = useNavigate();
+  const {
+    control,
+    handleSubmit,
+    formState: { errors },
+  } = useForm<LoginRequestType>({
+    resolver: yupResolver(loginValidationSchema),
+    mode: "onBlur",
+  });
   const onSubmit: SubmitHandler<LoginRequestType> = (data) => {
-    dispatch(authThunk.login(data));
+    dispatch(authThunk.login(data))
+      .then(() => {
+        navigate("/profile");
+      })
+      .catch(() => {});
   };
-  if (isLoggedIn) {
-    return <Navigate to={"/profile"} />;
-  }
-  //TODO реализовать запрос аус ми чтобы приложение знало, что мы залогенены
+
   return (
     <AuthLayout>
       <FormLabelComponent>
@@ -38,7 +48,8 @@ export const SignIn = () => {
             render={({ field }) => (
               <SuperInput
                 margin={"normal"}
-                label={"Email"}
+                label={errors.email ? errors.email.message : "Email"}
+                error={!!errors.email}
                 type={"email"}
                 {...field}
               />
@@ -50,8 +61,9 @@ export const SignIn = () => {
             render={({ field }) => (
               <SuperInput
                 margin={"normal"}
-                label={"Password"}
                 type={"password"}
+                label={errors.password ? errors.password.message : "Password"}
+                error={!!errors.password}
                 {...field}
               />
             )}
