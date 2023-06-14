@@ -39,6 +39,9 @@ const slice = createSlice({
       .addCase(logout.fulfilled, (state) => {
         state.isLoggedIn = false;
         state.profile = null;
+      })
+      .addCase(updateUser.fulfilled, (state, action) => {
+        state.profile = action.payload.profile;
       });
   },
 });
@@ -83,10 +86,23 @@ const logout = createAppAsyncThunk("auth/logout", async (_, thunkAPI) => {
     const res = await authApi.logout({});
     toast.success(res.data.info);
   } catch (e) {
-    rejectWithValue(responseErrorHandler(e as AxiosError | Error));
+    return rejectWithValue(responseErrorHandler(e as AxiosError | Error));
   }
 });
 
+const updateUser = createAppAsyncThunk(
+  "auth/updateUser",
+  async (arg: { name?: string; avatar?: string }, thunkAPI) => {
+    const { rejectWithValue } = thunkAPI;
+    try {
+      const res = await authApi.updateUser(arg);
+      return { profile: res.data.updatedUser };
+    } catch (e) {
+      return rejectWithValue(responseErrorHandler(e as AxiosError | Error));
+    }
+  }
+);
+
 export const authReducer = slice.reducer;
-export const authThunk = { register, login, authorization, logout };
+export const authThunk = { register, login, authorization, logout, updateUser };
 export const authActions = { ...authThunk, ...slice.actions };

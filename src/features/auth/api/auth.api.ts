@@ -21,4 +21,10 @@ export const authApi = {
   logout(data: {}) {
     return instance.delete<{ info: string; error: string }>("auth/me", data);
   },
+  updateUser(data: { name?: string; avatar?: string }) {
+    return instance.put<{ updatedUser: ProfileType; error?: string }>(
+      "auth/me",
+      data
+    );
+  },
 };

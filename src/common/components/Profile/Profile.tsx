@@ -24,6 +24,10 @@ export const Profile = () => {
       .then(() => navigate("/login"));
   };
 
+  const updateName = async (name: string) => {
+    await dispatch(authActions.updateUser({ name }));
+  };
+
   return (
     <AuthLayout>
       <FormLabelComponent>
@@ -33,9 +37,12 @@ export const Profile = () => {
         <AvatarComponent
           style={{ margin: "0 auto", width: "100px", height: "100px" }}
         />
-        <EditableSpan title={profile?.name ? profile.name : "Some name"} />
+        <EditableSpan
+          title={profile?.name ? profile.name : " "}
+          callback={updateName}
+        />
         <DescriptionComponent
-          title={profile?.email ? profile.email : "some@email.com"}
+          title={profile?.email ? profile.email : " "}
           textAlign={"center"}
         />
         <div style={{ margin: "0 auto" }}>
