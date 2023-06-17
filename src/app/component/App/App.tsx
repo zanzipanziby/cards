@@ -9,20 +9,23 @@ import { isLoadingSelect } from "../../app.selectors";
 import { GlobalError } from "../../../common/components/GlobalError/GlobalError";
 import LinearProgress from "@mui/material/LinearProgress";
 import { authActions } from "../../../features/auth/auth.slice";
+import { isLoggedInSelect } from "../../../features/auth/auth.selectors";
 
 function App() {
   const isLoading = useAppSelector(isLoadingSelect);
   const navigate = useNavigate();
 
   const dispatch = useAppDispatch();
+  const isLoggedIn = useAppSelector(isLoggedInSelect);
 
   useEffect(() => {
     // const timeoutId = setTimeout(() => {
     //   dispatch(appActions.setIsLoading({ isLoading: false }));
     // }, 3000);
     // return () => clearTimeout(timeoutId);
-
+    debugger;
     //todo дописать запрос authMe
+
     dispatch(authActions.authorization({}))
       .unwrap()
       .then(() => {

@@ -7,8 +7,11 @@ import { SuperButton } from "common/components/SuperButton/SuperButton";
 import { NavLink } from "react-router-dom";
 import { FormLabelComponent } from "features/auth/components/WrapperComponent/FormLabelComponent/FormLabelComponent";
 import { FormGroupComponent } from "features/auth/components/WrapperComponent/FormGroupComponent/FormGroupComponent";
+import { useAppSelector } from "../../../../common/hooks";
+import { profileSelect } from "../../auth.selectors";
 
 export const CheckEmail = () => {
+  const profile = useAppSelector(profileSelect);
   return (
     <AuthLayout>
       <FormLabelComponent>
@@ -20,7 +23,7 @@ export const CheckEmail = () => {
         </div>
         <DescriptionComponent
           textAlign={"center"}
-          title={"We’ve sent an Email with instructions to \n example@mail.com"}
+          title={`We’ve sent an Email with instructions to \n ${profile?.email}`}
         />
         <NavLink to={"/login"} style={{ display: "block" }}>
           <SuperButton

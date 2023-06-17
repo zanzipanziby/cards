@@ -54,6 +54,7 @@ export const Profile = () => {
           />
         </div>
       </FormGroupComponent>
+      <button onClick={() => navigate("/check-email")}>forgot-password</button>
     </AuthLayout>
   );
 };
