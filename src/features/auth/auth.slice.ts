@@ -62,6 +62,7 @@ const login = createAppAsyncThunk<{ profile: ProfileType }, LoginRequestType>(
   "auth/login",
   async (arg: LoginRequestType) => {
     const res = await authApi.login(arg);
+    toast.success("Logged in successfully");
     return { profile: res.data };
   }
 );
