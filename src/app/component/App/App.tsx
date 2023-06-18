@@ -29,7 +29,7 @@ function App() {
     dispatch(authActions.authorization({}))
       .unwrap()
       .then(() => {
-        navigate(`profile`);
+        navigate(`packs-list`);
       })
       .catch(() => {
         navigate(`login`);
@@ -38,7 +38,6 @@ function App() {
 
   return (
     <div className={style.App}>
-      {/*{isLoading && <h1>Loader...</h1>}*/}
       <Appbar />
       {isLoading && <LinearProgress />}
       <ContentContainer>

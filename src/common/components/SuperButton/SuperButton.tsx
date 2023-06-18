@@ -2,14 +2,14 @@ import React from "react";
 import Button, { ButtonProps } from "@mui/material/Button";
 import style from "./SuperButton.module.css";
 
-type SuperButtonPropsType = ButtonProps;
+type SuperButtonPropsType = ButtonProps & { isRectangular?: boolean };
 
 export const SuperButton = (props: SuperButtonPropsType) => {
   return (
     <Button
       {...props}
       variant={!props.variant ? "contained" : props.variant}
-      className={style.button}
+      className={props.isRectangular ? "" : style.button}
       color={props.color}
     >
       {props.title}

@@ -6,6 +6,8 @@ import { SignUp } from "features/auth/components/SignUp/SignUp";
 import { NewPassword } from "features/auth/components/NewPassword/NewPassword";
 import { CheckEmail } from "features/auth/components/CheckEmail/CheckEmail";
 import { Profile } from "common/components/Profile/Profile";
+import { ForgotPassword } from "../../features/auth/components/ForgotPassword";
+import { PacksList } from "../../features/packs/components/PacksList/PacksList";
 
 export const router = createBrowserRouter([
   {
@@ -22,7 +24,7 @@ export const router = createBrowserRouter([
       },
       {
         path: "/forgot-password",
-        element: <NewPassword />,
+        element: <ForgotPassword />,
       },
       {
         path: "/check-email",
@@ -31,6 +33,10 @@ export const router = createBrowserRouter([
       {
         path: "/profile",
         element: <Profile />,
+      },
+      {
+        path: "/packs-list",
+        element: <PacksList />,
       },
     ],
   },
