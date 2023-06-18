@@ -30,6 +30,7 @@ export const SignIn = () => {
   });
   const onSubmit: SubmitHandler<LoginRequestType> = (data) => {
     dispatch(authThunk.login(data))
+      .unwrap()
       .then(() => {
         navigate("/profile");
       })

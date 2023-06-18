@@ -53,17 +53,27 @@ const register = createAppAsyncThunk<any, RegisterRequestType>(
     try {
       await authApi.register(arg);
     } catch (e) {
-      return rejectWithValue(e);
+      return rejectWithValue({
+        error: responseErrorHandler(e as AxiosError | Error),
+      });
     }
   }
 );
 
 const login = createAppAsyncThunk<{ profile: ProfileType }, LoginRequestType>(
   "auth/login",
-  async (arg: LoginRequestType) => {
-    const res = await authApi.login(arg);
-    toast.success("Logged in successfully");
-    return { profile: res.data };
+  async (arg: LoginRequestType, thunkAPI) => {
+    const { rejectWithValue } = thunkAPI;
+    try {
+      const res = await authApi.login(arg);
+      toast.success("Logged in successfully");
+      return { profile: res.data };
+    } catch (e) {
+      debugger;
+      return rejectWithValue({
+        error: responseErrorHandler(e as AxiosError | Error),
+      });
+    }
   }
 );
 
@@ -75,8 +85,9 @@ const authorization = createAppAsyncThunk<{ profile: ProfileType }, {}>(
       const res = await authApi.authorization({});
       return { profile: res.data };
     } catch (e) {
-      const error = e as AxiosError;
-      return rejectWithValue(error);
+      return rejectWithValue({
+        error: responseErrorHandler(e as AxiosError | Error),
+      });
     }
   }
 );

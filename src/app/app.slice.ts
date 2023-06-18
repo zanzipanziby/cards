@@ -25,8 +25,8 @@ const slice = createSlice({
     builder
       .addMatcher(
         (action: PayloadAction) => action.type.endsWith("/rejected"),
-        (state, action) => {
-          state.error = responseErrorHandler(action.payload);
+        (state, action: PayloadAction<{ error: string }>) => {
+          state.error = action.payload.error;
         }
       )
       .addMatcher(

@@ -12,7 +12,6 @@ type EditableSpanPropsType = {
 };
 
 export const EditableSpan = (props: EditableSpanPropsType) => {
-  debugger;
   const [editMode, setEditMode] = useState(false);
   const [text, setText] = useState(props.title);
   const [error, setError] = useState(null as null | string);

@@ -23,7 +23,6 @@ function App() {
     //   dispatch(appActions.setIsLoading({ isLoading: false }));
     // }, 3000);
     // return () => clearTimeout(timeoutId);
-    debugger;
     //todo дописать запрос authMe
 
     dispatch(authActions.authorization({}))
