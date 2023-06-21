@@ -8,7 +8,7 @@ type CardPacksType = {
 };
 
 type FetchCardPacksResponseType = {
-  cardPacks: CardPacksType;
+  cardPacks: CardPacksType[];
   cardPacksTotalCount: number;
   // количество колод
   maxCardsCount: number;

@@ -6,6 +6,7 @@ import TableContainer from "@mui/material/TableContainer";
 import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
 import Paper from "@mui/material/Paper";
+import { convertDate } from "../../../../../common/utils/convertDate";
 
 function createData(
   name: string,
@@ -25,36 +26,40 @@ const rows = [
   createData("Gingerbread", 356, 16.0, 49, 3.9),
 ];
 
-export function TabelCardPacks() {
-  return (
-    <TableContainer component={Paper}>
-      <Table sx={{ minWidth: 650 }} aria-label="simple table">
-        <TableHead>
-          <TableRow>
-            <TableCell>Name</TableCell>
-            <TableCell align="left">Cards</TableCell>
-            <TableCell align="left">Last Updated</TableCell>
-            <TableCell align="left">Created by</TableCell>
-            <TableCell align="left"></TableCell>
+type TabelCardPacksPropsType = {
+  packs: FetchCardPacksResponseType | null;
+};
+
+export const TabelCardPacks: React.FC<TabelCardPacksPropsType> = ({
+  packs,
+}) => (
+  <TableContainer component={Paper}>
+    <Table sx={{ minWidth: 650 }} aria-label="simple table">
+      <TableHead>
+        <TableRow>
+          <TableCell>Name</TableCell>
+          <TableCell align="left">Cards</TableCell>
+          <TableCell align="left">Last Updated</TableCell>
+          <TableCell align="left">Created by</TableCell>
+          <TableCell align="left"></TableCell>
+        </TableRow>
+      </TableHead>
+      <TableBody>
+        {packs?.cardPacks.map((pack) => (
+          <TableRow
+            key={pack._id}
+            sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
+          >
+            <TableCell component="th" scope="row">
+              {pack.name}
+            </TableCell>
+            <TableCell align="left">{pack.cardsCount}</TableCell>
+            <TableCell align="left">{convertDate(pack.updated)}</TableCell>
+            <TableCell align="left">{convertDate(pack.created)}</TableCell>
+            <TableCell align="left">CRUD</TableCell>
           </TableRow>
-        </TableHead>
-        <TableBody>
-          {rows.map((row) => (
-            <TableRow
-              key={row.name}
-              sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
-            >
-              <TableCell component="th" scope="row">
-                {row.name}
-              </TableCell>
-              <TableCell align="left">{row.calories}</TableCell>
-              <TableCell align="left">{row.fat}</TableCell>
-              <TableCell align="left">{row.carbs}</TableCell>
-              <TableCell align="left">{row.protein}</TableCell>
-            </TableRow>
-          ))}
-        </TableBody>
-      </Table>
-    </TableContainer>
-  );
-}
+        ))}
+      </TableBody>
+    </Table>
+  </TableContainer>
+);

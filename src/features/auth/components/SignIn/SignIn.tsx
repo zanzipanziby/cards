@@ -32,7 +32,7 @@ export const SignIn = () => {
     dispatch(authThunk.login(data))
       .unwrap()
       .then(() => {
-        navigate("/profile");
+        navigate("/packs-list");
       })
       .catch(() => {});
   };

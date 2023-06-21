@@ -6,7 +6,6 @@ const minDistance = 1;
 
 export function SliderComponent() {
   const [value2, setValue2] = React.useState<number[]>([0, 100]);
-  console.log(...value2);
 
   const handleChange2 = (
     event: Event,

@@ -36,7 +36,7 @@ export const SignUp = () => {
       .then(() => {
         navigate("/login");
       })
-      .catch((e) => console.log(e));
+      .catch((e) => {});
   };
 
   return (

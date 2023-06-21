@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 
 import { SuperInput } from "../../../../common/components/SuperInput/SuperInput";
 import SuperTitle from "../../../../common/components/SuperTitle/SuperTitle";
@@ -11,8 +11,24 @@ import { InputAdornment } from "@mui/material";
 import SearchIcon from "@mui/icons-material/Search";
 import { TabelCardPacks } from "./TabelCardPacks/TabelCardPacks";
 import { SliderContainer } from "./SliderContainer/SliderContainer";
+import { packsActions } from "../../packs.slice";
+import { useAppDispatch } from "../../../../common/hooks";
+import { PaginationComponent } from "../../../../common/components/Pagination/PaginationComponent";
+import { useSelector } from "react-redux";
+import { getPacksSelect } from "../../packs.selector";
 
 export const PacksList = () => {
+  const dispatch = useAppDispatch();
+  const packs = useSelector(getPacksSelect);
+  //todo реализовать отоброжение страницы в адресной строке
+  useEffect(() => {
+    dispatch(packsActions.fetchCardPacks({}));
+  }, []);
+
+  const fetchCardPacksForPage = (page: number) => {
+    dispatch(packsActions.fetchCardPacks({ page }));
+  };
+
   const inputProps = {
     startAdornment: (
       <InputAdornment position={"start"}>
@@ -58,7 +74,15 @@ export const PacksList = () => {
         </Box>
       </Box>
       <Box sx={{ mt: 10 }}>
-        <TabelCardPacks />
+        <TabelCardPacks packs={packs} />
+      </Box>
+      <Box
+        style={{ display: "flex", justifyContent: "center", margin: "20px" }}
+      >
+        <PaginationComponent
+          callback={fetchCardPacksForPage}
+          count={packs?.cardPacksTotalCount ? packs?.cardPacksTotalCount : 10}
+        />
       </Box>
     </Box>
   );

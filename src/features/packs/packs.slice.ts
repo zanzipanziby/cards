@@ -3,6 +3,7 @@ import { createAppAsyncThunk } from "../../common/utils/create-app-async-thunk";
 import { packsApi } from "./api/packs.api";
 import { responseErrorHandler } from "../../common/utils/responseErrorHandler";
 import { AxiosError } from "axios";
+import { FetchCardPacksRequestType } from "./types/packs.request.type";
 
 const slice = createSlice({
   name: "packs",
@@ -19,7 +20,7 @@ const slice = createSlice({
 
 const fetchCardPacks = createAppAsyncThunk(
   "packs/fetchPacks",
-  async (arg: FetchCardPacksResponseType, thunkAPI) => {
+  async (arg: FetchCardPacksRequestType, thunkAPI) => {
     const { rejectWithValue } = thunkAPI;
     try {
       const res = await packsApi.fetchCardsPack(arg);

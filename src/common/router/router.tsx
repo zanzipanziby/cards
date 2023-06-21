@@ -34,7 +34,7 @@ export const router = createBrowserRouter([
         element: <Profile />,
       },
       {
-        path: "/packs-list",
+        path: "/packs-list/",
         element: <PacksList />,
       },
     ],

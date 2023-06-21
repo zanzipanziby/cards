@@ -30,7 +30,7 @@ export function MenuComponent() {
     dispatch(authActions.logout())
       .unwrap()
       .then(() => navigate("/login"))
-      .catch((e: unknown) => console.log(e));
+      .catch((e: unknown) => {});
   };
 
   const redirectToProfile = () => {
