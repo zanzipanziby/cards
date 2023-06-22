@@ -6,7 +6,7 @@ export type FetchCardPacksRequestType = {
   page?: number; // не обязательно
   pageCount?: number; // не обязательно
 
-  user_id?: number;
+  user_id?: string;
   // чьи колоды не обязательно, или придут все
 
   block?: boolean; // не обязательно

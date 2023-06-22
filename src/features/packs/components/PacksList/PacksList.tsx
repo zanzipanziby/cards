@@ -15,17 +15,27 @@ import { packsActions } from "../../packs.slice";
 import { useAppDispatch } from "../../../../common/hooks";
 import { PaginationComponent } from "../../../../common/components/Pagination/PaginationComponent";
 import { useSelector } from "react-redux";
-import { getPacksSelect } from "../../packs.selector";
+import { activeShowPacksButton, getPacksSelect } from "../../packs.selector";
+import { profileSelect } from "../../../auth/auth.selectors";
 
 export const PacksList = () => {
   const dispatch = useAppDispatch();
   const packs = useSelector(getPacksSelect);
-  //todo реализовать отоброжение страницы в адресной строке
+  const page = packs?.page;
+  const profile = useSelector(profileSelect);
+  const user_id = profile?._id;
+  const activeButton = useSelector(activeShowPacksButton);
+
+  //todo реализовать отоброжение query в адресной строке (в последнюю очередь)
   useEffect(() => {
     dispatch(packsActions.fetchCardPacks({}));
   }, []);
 
   const fetchCardPacksForPage = (page: number) => {
+    if (activeButton === "My Cards") {
+      dispatch(packsActions.fetchCardPacks({ page, user_id }));
+      return;
+    }
     dispatch(packsActions.fetchCardPacks({ page }));
   };
 
@@ -73,17 +83,39 @@ export const PacksList = () => {
           />
         </Box>
       </Box>
-      <Box sx={{ mt: 10 }}>
-        <TabelCardPacks packs={packs} />
-      </Box>
-      <Box
-        style={{ display: "flex", justifyContent: "center", margin: "20px" }}
-      >
-        <PaginationComponent
-          callback={fetchCardPacksForPage}
-          count={packs?.cardPacksTotalCount ? packs?.cardPacksTotalCount : 10}
-        />
-      </Box>
+      {packs?.cardPacks.length !== 0 ? (
+        <>
+          <Box sx={{ mt: 10 }}>
+            <TabelCardPacks packs={packs} />
+          </Box>
+          <Box
+            style={{
+              display: "flex",
+              justifyContent: "center",
+              margin: "20px",
+            }}
+          >
+            <PaginationComponent
+              callback={fetchCardPacksForPage}
+              count={
+                packs?.cardPacksTotalCount ? packs?.cardPacksTotalCount : 1
+              }
+              page={page ? page : 1}
+            />
+          </Box>
+        </>
+      ) : (
+        <Box
+          style={{
+            display: "flex",
+            justifyContent: "center",
+            marginTop: "100px",
+            fontSize: "2em",
+          }}
+        >
+          <DescriptionComponent title={`You don't have packs`} />
+        </Box>
+      )}
     </Box>
   );
 };

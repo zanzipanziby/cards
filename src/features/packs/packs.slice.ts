@@ -1,4 +1,4 @@
-import { createSlice } from "@reduxjs/toolkit";
+import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { createAppAsyncThunk } from "../../common/utils/create-app-async-thunk";
 import { packsApi } from "./api/packs.api";
 import { responseErrorHandler } from "../../common/utils/responseErrorHandler";
@@ -9,8 +9,22 @@ const slice = createSlice({
   name: "packs",
   initialState: {
     cardPacks: null as null | FetchCardPacksResponseType,
+    packsListInterface: {
+      activeShowPacksButton: "All Cards" as "All Cards" | "My Cards",
+      paginationPage: 1,
+      //todo раздать disable компонентам
+      disable: false,
+    },
   },
-  reducers: {},
+  reducers: {
+    changeActiveShowPacksButton: (
+      state,
+      action: PayloadAction<{ activeButton: "All Cards" | "My Cards" }>
+    ) => {
+      state.packsListInterface.activeShowPacksButton =
+        action.payload.activeButton;
+    },
+  },
   extraReducers: (builder) => {
     builder.addCase(fetchCardPacks.fulfilled, (state, action) => {
       state.cardPacks = action.payload.cardPacks;
@@ -26,7 +40,9 @@ const fetchCardPacks = createAppAsyncThunk(
       const res = await packsApi.fetchCardsPack(arg);
       return { cardPacks: res.data };
     } catch (e) {
-      return rejectWithValue(responseErrorHandler(e as AxiosError | Error));
+      return rejectWithValue({
+        error: responseErrorHandler(e as AxiosError | Error),
+      });
     }
   }
 );

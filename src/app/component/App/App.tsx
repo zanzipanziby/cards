@@ -3,7 +3,7 @@ import { useAppDispatch, useAppSelector } from "common/hooks";
 import style from "./App.module.css";
 import "react-toastify/dist/ReactToastify.css";
 import { Appbar } from "app/component/App/Toolbar/Appbar";
-import { Outlet, useNavigate } from "react-router-dom";
+import { Outlet, useNavigate, useSearchParams } from "react-router-dom";
 import { ContentContainer } from "app/component/App/ContentContainer/ContentContainer";
 import { isLoadingSelect } from "../../app.selectors";
 import { GlobalError } from "../../../common/components/GlobalError/GlobalError";
@@ -19,12 +19,6 @@ function App() {
   const isLoggedIn = useAppSelector(isLoggedInSelect);
 
   useEffect(() => {
-    // const timeoutId = setTimeout(() => {
-    //   dispatch(appActions.setIsLoading({ isLoading: false }));
-    // }, 3000);
-    // return () => clearTimeout(timeoutId);
-    //todo дописать запрос authMe
-
     dispatch(authActions.authorization({}))
       .unwrap()
       .then(() => {
@@ -38,7 +32,7 @@ function App() {
   return (
     <div className={style.App}>
       <Appbar />
-      {isLoading && <LinearProgress />}
+      {isLoading ? <LinearProgress /> : <div style={{ height: "4px" }}></div>}
       <ContentContainer>
         <div className={style.align}>
           <Outlet />

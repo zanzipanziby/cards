@@ -7,7 +7,7 @@ import { SuperInput } from "common/components/SuperInput/SuperInput";
 import { SuperButton } from "common/components/SuperButton/SuperButton";
 import FormControlLabel from "@mui/material/FormControlLabel";
 import { SuperCheckbox } from "common/components/SuperCheckbox/SuperCheckbox";
-import { NavLink, useNavigate } from "react-router-dom";
+import { NavLink, useNavigate, useSearchParams } from "react-router-dom";
 import { DescriptionComponent } from "common/components/DescriptionComponent/DescriptionComponent";
 import SuperTitle from "common/components/SuperTitle/SuperTitle";
 import { Controller, SubmitHandler, useForm } from "react-hook-form";
@@ -20,6 +20,7 @@ import { loginValidationSchema } from "../../../../common/yap.validation";
 export const SignIn = () => {
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
+  const [params, setParams] = useSearchParams();
   const {
     control,
     handleSubmit,
@@ -32,7 +33,7 @@ export const SignIn = () => {
     dispatch(authThunk.login(data))
       .unwrap()
       .then(() => {
-        navigate("/packs-list");
+        navigate(`/packs-list`);
       })
       .catch(() => {});
   };

@@ -6,18 +6,16 @@ import Stack from "@mui/material/Stack";
 type PaginationComponentPropsType = {
   callback: (page: number) => void;
   count: number;
+  page: number;
 };
 
 export const PaginationComponent: React.FC<PaginationComponentPropsType> = ({
   callback,
   count,
+  page,
 }) => {
-  const [page, setPage] = React.useState(1);
-  useEffect(() => {
-    callback(page);
-  }, [page]);
   const handleChange = (event: React.ChangeEvent<unknown>, value: number) => {
-    setPage(value);
+    callback(value);
   };
 
   return (
